@@ -24,5 +24,29 @@
         ]
       }
     ]
+  },
+  "02-angled": {
+    "total_cards_visible": 8,
+    "layout": "2 rows of 4, handwritten on yellow sticky notes on wall",
+    "piles": [
+      {
+        "label": "top-row",
+        "cards": [
+          "To die at home",
+          "To be free of pain",
+          "To be free from anxiety",
+          "Wild card"
+        ]
+      },
+      {
+        "label": "bottom-row",
+        "cards": [
+          "To have human touch",
+          "To keep my sense of humour",
+          "To be kept clean",
+          "To be mentally aware"
+        ]
+      }
+    ]
   }
 }
