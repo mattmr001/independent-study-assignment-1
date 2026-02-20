@@ -1,0 +1,28 @@
+{
+  "01-controlled": {
+    "total_cards_visible": 10,
+    "layout": "2 rows of 5, no pile separation",
+    "piles": [
+      {
+        "label": "top-row",
+        "cards": [
+          "To die at home",
+          "To be free from pain",
+          "To be free from anxiety",
+          "Wild Card",
+          "To have a doctor who knows me as a whole person"
+        ]
+      },
+      {
+        "label": "bottom-row",
+        "cards": [
+          "To say goodbye to important people in my life",
+          "To have human touch",
+          "To keep my sense of humor",
+          "To be kept clean",
+          "To be mentally aware"
+        ]
+      }
+    ]
+  }
+}
