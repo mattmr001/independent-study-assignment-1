@@ -1,3 +1,5 @@
+// ABOUTME: Main application component
+// ABOUTME: Renders centered welcome text with status bar
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 

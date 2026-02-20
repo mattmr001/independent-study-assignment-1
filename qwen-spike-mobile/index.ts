@@ -1,3 +1,5 @@
+// ABOUTME: Application entry point
+// ABOUTME: Registers root component with Expo runtime
 import { registerRootComponent } from 'expo';
 
 import App from './App';
