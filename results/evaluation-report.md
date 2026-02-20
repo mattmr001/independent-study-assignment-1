@@ -183,5 +183,5 @@ Bounding box analysis:
 **Risks for Phase 2:**
 - Q4_K_M quantization may be too large for on-device memory; may need Q3_K or IQ2 quantization with unknown accuracy impact
 - Phone camera photos will differ from these test conditions
-- llama.rn may not support Qwen3-VL's vision projector architecture yet
+- ~~llama.rn may not support Qwen3-VL's vision projector architecture yet~~ **Mitigated:** Community reports confirm llama.rn supports Qwen3-VL-2B with the mmproj file we already use. Needs verification against llama.rn's current release, but this is no longer a blocking unknown.
 - Inference time (~7–10s for complex images) may be too slow for real-time facilitator use
