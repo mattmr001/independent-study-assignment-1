@@ -18,7 +18,8 @@
     },
     "plugins": [
       "expo-dev-client",
-      "llama.rn"
+      "llama.rn",
+      "expo-asset"
     ]
   }
 }
