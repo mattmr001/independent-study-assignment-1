@@ -1,0 +1,8 @@
+# Model files (large binaries)
+models/*.gguf
+
+# macOS
+.DS_Store
+
+# llama.cpp build artifacts (if built from source)
+llama.cpp/
