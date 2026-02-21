@@ -2,8 +2,10 @@
 // ABOUTME: Loads Qwen3-VL-2B model and runs multimodal inference
 
 import { initLlama, LlamaContext } from 'llama.rn';
-import { Asset } from 'expo-asset';
 import * as FileSystem from 'expo-file-system/legacy';
+import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
+
+const MAX_IMAGE_WIDTH = 512;
 
 export interface InferenceResult {
   output: string;
@@ -29,6 +31,15 @@ function uriToPath(uri: string): string {
   return uri;
 }
 
+async function resizeImage(uri: string): Promise<string> {
+  const result = await manipulateAsync(
+    uri,
+    [{ resize: { width: MAX_IMAGE_WIDTH } }],
+    { format: SaveFormat.JPEG, compress: 0.8 }
+  );
+  return result.uri;
+}
+
 async function getModelPath(filename: string): Promise<string> {
   const docDir = FileSystem.documentDirectory;
   const docPath = `${docDir}models/${filename}`;
@@ -44,12 +55,8 @@ async function getModelPath(filename: string): Promise<string> {
   throw new Error(`Model not found at ${docPath}. Copy ${filename} to the app's Documents/models/ folder.`);
 }
 
-async function getAssetPath(asset: Asset): Promise<string> {
-  await asset.downloadAsync();
-  return asset.localUri || asset.uri;
-}
-
 export async function runInference(
+  imagePath: string,
   onStatus: (status: string) => void
 ): Promise<InferenceResult> {
   const modelLoadStart = Date.now();
@@ -70,13 +77,13 @@ export async function runInference(
     } as InferenceError;
   }
 
-  onStatus('Loading model...');
+  onStatus('Resizing image...');
 
-  // Load test image asset (small enough for Metro)
-  const imageAsset = Asset.fromModule(require('../assets/test-image.jpg'));
-  const imageUri = await getAssetPath(imageAsset);
-  const imagePath = uriToPath(imageUri);
-  console.log('Image path:', imagePath);
+  const resizedUri = await resizeImage(imagePath);
+  const rawImagePath = uriToPath(resizedUri);
+  console.log('Resized image path:', rawImagePath);
+
+  onStatus('Loading model...');
 
   try {
     // Initialize llama context
@@ -100,8 +107,8 @@ export async function runInference(
 
     // Run completion with image
     const result = await context.completion({
-      prompt: 'Describe this image.',
-      media_paths: [imagePath],
+      prompt: 'Extract all Go Wish cards visible in this image. Return JSON with format: {"cards": [{"text": "card text here", "row": "top|middle|bottom"}]}. List every card you can read.',
+      media_paths: [rawImagePath],
     });
 
     const inferenceTimeMs = Date.now() - inferenceStart;

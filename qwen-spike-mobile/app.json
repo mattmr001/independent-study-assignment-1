@@ -17,13 +17,15 @@
       "bundleIdentifier": "com.spike.qwenvl",
       "infoPlist": {
         "UIFileSharingEnabled": true,
-        "LSSupportsOpeningDocumentsInPlace": true
+        "LSSupportsOpeningDocumentsInPlace": true,
+        "NSCameraUsageDescription": "This app uses the camera to photograph co-design artifacts for analysis."
       }
     },
     "plugins": [
       "expo-dev-client",
       "llama.rn",
-      "expo-asset"
+      "expo-asset",
+      "expo-image-picker"
     ]
   }
 }
