@@ -9,7 +9,9 @@ import {
   Pressable,
   ScrollView,
   ActivityIndicator,
+  Image,
 } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 import { runInference, releaseModel, InferenceResult, InferenceError } from './lib/inference';
 
 export default function App() {
@@ -17,14 +19,40 @@ export default function App() {
   const [result, setResult] = useState<InferenceResult | null>(null);
   const [error, setError] = useState<InferenceError | null>(null);
   const [isRunning, setIsRunning] = useState(false);
+  const [imageUri, setImageUri] = useState<string | null>(null);
+
+  const handleTakePhoto = async () => {
+    const permission = await ImagePicker.requestCameraPermissionsAsync();
+    if (!permission.granted) {
+      setError({
+        stage: 'inference',
+        message: 'Camera permission denied',
+      });
+      return;
+    }
+
+    const result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ['images'],
+      quality: 0.8,
+    });
+
+    if (!result.canceled && result.assets[0]) {
+      setImageUri(result.assets[0].uri);
+      setResult(null);
+      setError(null);
+      setStatus('Photo captured');
+    }
+  };
 
   const handleRunInference = async () => {
+    if (!imageUri) return;
+
     setIsRunning(true);
     setResult(null);
     setError(null);
 
     try {
-      const inferenceResult = await runInference(setStatus);
+      const inferenceResult = await runInference(imageUri, setStatus);
       setResult(inferenceResult);
       setStatus('Complete');
     } catch (err) {
@@ -41,9 +69,24 @@ export default function App() {
       <Text style={styles.title}>Qwen3-VL Mobile Spike</Text>
 
       <Pressable
-        style={[styles.button, isRunning && styles.buttonDisabled]}
+        style={styles.button}
+        onPress={handleTakePhoto}
+      >
+        <Text style={styles.buttonText}>Take Photo</Text>
+      </Pressable>
+
+      {imageUri && (
+        <Image
+          source={{ uri: imageUri }}
+          style={styles.preview}
+          resizeMode="contain"
+        />
+      )}
+
+      <Pressable
+        style={[styles.button, (!imageUri || isRunning) && styles.buttonDisabled]}
         onPress={handleRunInference}
-        disabled={isRunning}
+        disabled={!imageUri || isRunning}
       >
         {isRunning ? (
           <ActivityIndicator color="#fff" />
@@ -100,6 +143,13 @@ const styles = StyleSheet.create({
   },
   buttonDisabled: {
     backgroundColor: '#999',
+  },
+  preview: {
+    width: '100%',
+    height: 200,
+    borderRadius: 8,
+    marginBottom: 16,
+    backgroundColor: '#e0e0e0',
   },
   buttonText: {
     color: '#fff',
