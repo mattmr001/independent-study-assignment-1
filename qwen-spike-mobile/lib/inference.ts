@@ -3,7 +3,7 @@
 
 import { initLlama, LlamaContext } from 'llama.rn';
 import { Asset } from 'expo-asset';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 
 export interface InferenceResult {
   output: string;
@@ -21,11 +21,25 @@ let context: LlamaContext | null = null;
 const MODEL_FILENAME = 'Qwen3VL-2B-Instruct-Q4_K_M.gguf';
 const MMPROJ_FILENAME = 'mmproj-Qwen3VL-2B-Instruct-F16.gguf';
 
+function uriToPath(uri: string): string {
+  // Convert file:// URI to raw path for native libraries
+  if (uri.startsWith('file://')) {
+    return decodeURIComponent(uri.replace('file://', ''));
+  }
+  return uri;
+}
+
 async function getModelPath(filename: string): Promise<string> {
-  const docPath = `${FileSystem.documentDirectory}models/${filename}`;
+  const docDir = FileSystem.documentDirectory;
+  const docPath = `${docDir}models/${filename}`;
+
+  console.log('Looking for model at:', docPath);
+
   const info = await FileSystem.getInfoAsync(docPath);
   if (info.exists) {
-    return docPath;
+    const rawPath = uriToPath(docPath);
+    console.log('Found model, raw path:', rawPath);
+    return rawPath;
   }
   throw new Error(`Model not found at ${docPath}. Copy ${filename} to the app's Documents/models/ folder.`);
 }
@@ -60,7 +74,9 @@ export async function runInference(
 
   // Load test image asset (small enough for Metro)
   const imageAsset = Asset.fromModule(require('../assets/test-image.jpg'));
-  const imagePath = await getAssetPath(imageAsset);
+  const imageUri = await getAssetPath(imageAsset);
+  const imagePath = uriToPath(imageUri);
+  console.log('Image path:', imagePath);
 
   try {
     // Initialize llama context
