@@ -3,6 +3,9 @@
 
 import { initLlama, LlamaContext } from 'llama.rn';
 import * as FileSystem from 'expo-file-system/legacy';
+import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
+
+const MAX_IMAGE_WIDTH = 512;
 
 export interface InferenceResult {
   output: string;
@@ -26,6 +29,15 @@ function uriToPath(uri: string): string {
     return decodeURIComponent(uri.replace('file://', ''));
   }
   return uri;
+}
+
+async function resizeImage(uri: string): Promise<string> {
+  const result = await manipulateAsync(
+    uri,
+    [{ resize: { width: MAX_IMAGE_WIDTH } }],
+    { format: SaveFormat.JPEG, compress: 0.8 }
+  );
+  return result.uri;
 }
 
 async function getModelPath(filename: string): Promise<string> {
@@ -65,10 +77,13 @@ export async function runInference(
     } as InferenceError;
   }
 
-  onStatus('Loading model...');
+  onStatus('Resizing image...');
 
-  const rawImagePath = uriToPath(imagePath);
-  console.log('Image path:', rawImagePath);
+  const resizedUri = await resizeImage(imagePath);
+  const rawImagePath = uriToPath(resizedUri);
+  console.log('Resized image path:', rawImagePath);
+
+  onStatus('Loading model...');
 
   try {
     // Initialize llama context
