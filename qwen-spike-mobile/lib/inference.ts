@@ -2,7 +2,6 @@
 // ABOUTME: Loads Qwen3-VL-2B model and runs multimodal inference
 
 import { initLlama, LlamaContext } from 'llama.rn';
-import { Asset } from 'expo-asset';
 import * as FileSystem from 'expo-file-system/legacy';
 
 export interface InferenceResult {
@@ -44,12 +43,8 @@ async function getModelPath(filename: string): Promise<string> {
   throw new Error(`Model not found at ${docPath}. Copy ${filename} to the app's Documents/models/ folder.`);
 }
 
-async function getAssetPath(asset: Asset): Promise<string> {
-  await asset.downloadAsync();
-  return asset.localUri || asset.uri;
-}
-
 export async function runInference(
+  imagePath: string,
   onStatus: (status: string) => void
 ): Promise<InferenceResult> {
   const modelLoadStart = Date.now();
@@ -72,11 +67,8 @@ export async function runInference(
 
   onStatus('Loading model...');
 
-  // Load test image asset (small enough for Metro)
-  const imageAsset = Asset.fromModule(require('../assets/test-image.jpg'));
-  const imageUri = await getAssetPath(imageAsset);
-  const imagePath = uriToPath(imageUri);
-  console.log('Image path:', imagePath);
+  const rawImagePath = uriToPath(imagePath);
+  console.log('Image path:', rawImagePath);
 
   try {
     // Initialize llama context
@@ -101,7 +93,7 @@ export async function runInference(
     // Run completion with image
     const result = await context.completion({
       prompt: 'Describe this image.',
-      media_paths: [imagePath],
+      media_paths: [rawImagePath],
     });
 
     const inferenceTimeMs = Date.now() - inferenceStart;
