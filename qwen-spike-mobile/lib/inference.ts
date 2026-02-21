@@ -3,6 +3,7 @@
 
 import { initLlama, LlamaContext } from 'llama.rn';
 import { Asset } from 'expo-asset';
+import * as FileSystem from 'expo-file-system';
 
 export interface InferenceResult {
   output: string;
@@ -11,11 +12,23 @@ export interface InferenceResult {
 }
 
 export interface InferenceError {
-  stage: 'model_load' | 'multimodal_init' | 'inference';
+  stage: 'model_load' | 'multimodal_init' | 'inference' | 'file_not_found';
   message: string;
 }
 
 let context: LlamaContext | null = null;
+
+const MODEL_FILENAME = 'Qwen3VL-2B-Instruct-Q4_K_M.gguf';
+const MMPROJ_FILENAME = 'mmproj-Qwen3VL-2B-Instruct-F16.gguf';
+
+async function getModelPath(filename: string): Promise<string> {
+  const docPath = `${FileSystem.documentDirectory}models/${filename}`;
+  const info = await FileSystem.getInfoAsync(docPath);
+  if (info.exists) {
+    return docPath;
+  }
+  throw new Error(`Model not found at ${docPath}. Copy ${filename} to the app's Documents/models/ folder.`);
+}
 
 async function getAssetPath(asset: Asset): Promise<string> {
   await asset.downloadAsync();
@@ -27,21 +40,25 @@ export async function runInference(
 ): Promise<InferenceResult> {
   const modelLoadStart = Date.now();
 
+  onStatus('Checking model files...');
+
+  let modelPath: string;
+  let mmprojPath: string;
+
+  try {
+    modelPath = await getModelPath(MODEL_FILENAME);
+    mmprojPath = await getModelPath(MMPROJ_FILENAME);
+  } catch (error) {
+    const err = error as Error;
+    throw {
+      stage: 'file_not_found',
+      message: err.message,
+    } as InferenceError;
+  }
+
   onStatus('Loading model...');
 
-  // Load model asset
-  const modelAsset = Asset.fromModule(
-    require('../assets/models/Qwen3VL-2B-Instruct-Q4_K_M.gguf')
-  );
-  const modelPath = await getAssetPath(modelAsset);
-
-  // Load mmproj asset
-  const mmprojAsset = Asset.fromModule(
-    require('../assets/models/mmproj-Qwen3VL-2B-Instruct-F16.gguf')
-  );
-  const mmprojPath = await getAssetPath(mmprojAsset);
-
-  // Load test image asset
+  // Load test image asset (small enough for Metro)
   const imageAsset = Asset.fromModule(require('../assets/test-image.jpg'));
   const imagePath = await getAssetPath(imageAsset);
 
