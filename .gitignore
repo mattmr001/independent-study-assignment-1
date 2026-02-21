@@ -6,3 +6,6 @@ models/*.gguf
 
 # llama.cpp build artifacts (if built from source)
 llama.cpp/
+
+# Git worktrees
+.worktrees/
