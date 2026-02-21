@@ -92,7 +92,7 @@ export async function runInference(
 
     // Run completion with image
     const result = await context.completion({
-      prompt: 'Describe this image.',
+      prompt: 'Extract all Go Wish cards visible in this image. Return JSON with format: {"cards": [{"text": "card text here", "row": "top|middle|bottom"}]}. List every card you can read.',
       media_paths: [rawImagePath],
     });
 
