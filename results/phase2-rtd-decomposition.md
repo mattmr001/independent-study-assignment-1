@@ -14,7 +14,7 @@ Healthcare co-design sessions generate physical artifacts — Go Wish cards arra
 
 ### Preferred State (what should the world look like)
 
-A facilitator photographs physical artifacts mid-session. On-device inference interprets both the text *and* spatial arrangement — "these 5 cards form a pile near the top-left; these 3 cards cluster together." The facilitator gets structured data without breaking flow. No cloud upload (HIPAA-relevant), no specialized hardware, no technical expertise required beyond taking a photo.
+A facilitator photographs physical artifacts mid-session. On-device inference interprets both the text *and* spatial arrangement — "these 5 cards form a pile near the top-left; these 3 cards cluster together." The facilitator gets structured data without breaking flow. No cloud upload (relevant under PHIPA in Ontario, PIPEDA federally, HIPAA in US contexts), no specialized hardware, no technical expertise required beyond taking a photo.
 
 ### What Makes This Wicked
 
@@ -24,7 +24,7 @@ A facilitator photographs physical artifacts mid-session. On-device inference in
 
 3. **Context-dependent performance:** Healthcare settings vary wildly — fluorescent lighting vs. natural light, cramped hospital rooms vs. conference spaces, rushed sessions vs. unhurried workshops. Performance validated in one context may not transfer.
 
-4. **Privacy/capability tradeoff:** On-device inference preserves privacy but constrains model size. Cloud inference enables larger models but introduces HIPAA complexity. Neither is obviously correct.
+4. **Privacy/capability tradeoff:** On-device inference preserves privacy but constrains model size. Cloud inference enables larger models but introduces regulatory complexity (PHIPA/PIPEDA in Canada, HIPAA in US). Neither is obviously correct.
 
 ---
 
