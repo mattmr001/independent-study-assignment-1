@@ -1,12 +1,19 @@
-// ABOUTME: Studies domain slice — manages runtime study containers
-// ABOUTME: Placeholder — will be implemented with createEntityAdapter
+// ABOUTME: Studies Redux slice — manages runtime study containers
+// ABOUTME: Uses createEntityAdapter for normalized CRUD operations
 
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
+import { Study } from './types';
+
+const adapter = createEntityAdapter<Study>();
 
 const slice = createSlice({
   name: 'studies',
-  initialState: { ids: [] as string[], entities: {} as Record<string, unknown> },
-  reducers: {},
+  initialState: adapter.getInitialState(),
+  reducers: {
+    addStudy: adapter.addOne,
+  },
 });
 
+export const { addStudy } = slice.actions;
+export const studySelectors = adapter.getSelectors();
 export default slice.reducer;
