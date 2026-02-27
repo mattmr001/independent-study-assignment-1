@@ -1,12 +1,27 @@
-// ABOUTME: Results domain slice — manages analysis output
-// ABOUTME: Placeholder — will be implemented with createEntityAdapter
+// ABOUTME: Results Redux slice — manages analysis output
+// ABOUTME: Scoped to analyses via selectResultByAnalysisId selector
 
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
+import { Result } from './types';
+
+const adapter = createEntityAdapter<Result>();
 
 const slice = createSlice({
   name: 'results',
-  initialState: { ids: [] as string[], entities: {} as Record<string, unknown> },
-  reducers: {},
+  initialState: adapter.getInitialState(),
+  reducers: {
+    addResult: adapter.addOne,
+  },
 });
+
+export const { addResult } = slice.actions;
+export const resultSelectors = adapter.getSelectors();
+
+export function selectResultByAnalysisId(
+  state: ReturnType<typeof slice.reducer>,
+  analysisId: string,
+): Result | undefined {
+  return resultSelectors.selectAll(state).find(r => r.analysisId === analysisId);
+}
 
 export default slice.reducer;
