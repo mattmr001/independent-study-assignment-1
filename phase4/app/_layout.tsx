@@ -2,7 +2,15 @@
 // ABOUTME: Entry point for Expo Router navigation
 
 import { Slot } from 'expo-router';
+import { Provider } from 'react-redux';
+import { makeStore } from '../src/data/store';
+
+const store = makeStore();
 
 export default function RootLayout() {
-  return <Slot />;
+  return (
+    <Provider store={store}>
+      <Slot />
+    </Provider>
+  );
 }
