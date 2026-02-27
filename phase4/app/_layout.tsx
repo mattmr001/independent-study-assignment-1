@@ -1,17 +1,34 @@
-// ABOUTME: Root layout — wraps app with Redux Provider
-// ABOUTME: Entry point for Expo Router navigation
+// ABOUTME: Root layout — Redux Provider with persistence and navigation
+// ABOUTME: Entry point for all screens via Expo Router
 
 import { Slot } from 'expo-router';
 import { Provider } from 'react-redux';
-import { makeStore } from '../src/data/store';
+import { PersistGate } from 'redux-persist/integration/react';
+import { configureStore } from '@reduxjs/toolkit';
+import { Text } from 'react-native';
+import { persistedReducer, persistStore } from '../src/data/persistence';
+import { ThunkExtra } from '../src/data/store';
 import * as inferenceService from '../src/data/inference/service';
 
-const store = makeStore(undefined, { inferenceService });
+const extra: ThunkExtra = { inferenceService };
+
+const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      thunk: { extraArgument: extra },
+      serializableCheck: false,
+    }),
+});
+
+const persistor = persistStore(store);
 
 export default function RootLayout() {
   return (
     <Provider store={store}>
-      <Slot />
+      <PersistGate loading={<Text>Loading...</Text>} persistor={persistor}>
+        <Slot />
+      </PersistGate>
     </Provider>
   );
 }
