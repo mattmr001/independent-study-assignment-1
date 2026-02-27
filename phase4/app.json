@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "name": "Co-Design Capture",
+    "slug": "co-design-capture",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "scheme": "codesign",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.codesign.capture",
+      "infoPlist": {
+        "UIFileSharingEnabled": true,
+        "LSSupportsOpeningDocumentsInPlace": true,
+        "NSCameraUsageDescription": "This app uses the camera to photograph co-design artifacts for analysis."
+      }
+    },
+    "plugins": [
+      "expo-dev-client",
+      "llama.rn",
+      "expo-asset",
+      "expo-image-picker",
+      "expo-router"
+    ]
+  }
+}
