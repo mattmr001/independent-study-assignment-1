@@ -10,6 +10,7 @@ import { selectParticipantsByStudyId } from '../../../src/domain/participants/sl
 import { selectSessionsByStudyId } from '../../../src/domain/sessions/slice';
 import { addSession } from '../../../src/domain/sessions/slice';
 import { colors } from '../../../src/presentation/theme/colors';
+import { typography } from '../../../src/presentation/theme/typography';
 
 export default function StudyDetailScreen() {
   const { studyId } = useLocalSearchParams<{ studyId: string }>();
@@ -109,19 +110,19 @@ export default function StudyDetailScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 24, paddingTop: 60, backgroundColor: colors.background },
-  title: { fontSize: 24, fontWeight: 'bold', color: colors.textPrimary, textAlign: 'center', marginBottom: 24 },
-  sectionHeader: { fontSize: 18, fontWeight: '600', color: colors.textPrimary, marginTop: 16, marginBottom: 8 },
+  title: { ...typography.title, color: colors.text, textAlign: 'center', marginBottom: 24 },
+  sectionHeader: { ...typography.sectionHeader, color: colors.text, marginTop: 16, marginBottom: 8 },
   listItem: {
-    backgroundColor: colors.surface, padding: 12, borderRadius: 6,
+    backgroundColor: colors.surface, padding: 12, borderRadius: 0,
     marginBottom: 8, borderWidth: 1, borderColor: colors.border,
   },
-  listItemText: { fontSize: 16, color: colors.textPrimary },
-  empty: { color: colors.textSecondary, marginBottom: 8 },
+  listItemText: { ...typography.body, color: colors.text },
+  empty: { ...typography.body, color: colors.text, marginBottom: 8 },
   button: {
-    backgroundColor: colors.accent, padding: 14, borderRadius: 8,
-    alignItems: 'center', marginTop: 8, marginBottom: 16,
+    backgroundColor: colors.background, padding: 14, borderRadius: 0,
+    alignItems: 'center', marginTop: 8, marginBottom: 16, borderWidth: 2, borderColor: colors.border,
   },
   buttonDisabled: { opacity: 0.4 },
-  buttonText: { color: colors.white, fontSize: 16, fontWeight: '600' },
-  error: { fontSize: 18, color: colors.error, textAlign: 'center' },
+  buttonText: { ...typography.button, color: colors.text },
+  error: { ...typography.body, color: colors.error, textAlign: 'center' },
 });
