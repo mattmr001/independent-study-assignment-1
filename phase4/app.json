@@ -22,7 +22,8 @@
       "llama.rn",
       "expo-asset",
       "expo-image-picker",
-      "expo-router"
+      "expo-router",
+      "expo-font"
     ]
   }
 }
