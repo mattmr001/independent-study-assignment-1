@@ -10,6 +10,7 @@ import { RootState, AppDispatch } from '../../../../../src/data/store';
 import { addCapture, selectCapturesBySessionId } from '../../../../../src/domain/captures/slice';
 import { CapturePreview } from '../../../../../src/presentation/components/CapturePreview';
 import { colors } from '../../../../../src/presentation/theme/colors';
+import { typography } from '../../../../../src/presentation/theme/typography';
 
 export default function CaptureScreen() {
   const { studyId, sessionId } = useLocalSearchParams<{ studyId: string; sessionId: string }>();
@@ -77,13 +78,13 @@ export default function CaptureScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 24, paddingTop: 60, backgroundColor: colors.background },
-  title: { fontSize: 24, fontWeight: 'bold', color: colors.textPrimary, textAlign: 'center', marginBottom: 24 },
+  title: { ...typography.title, color: colors.text, textAlign: 'center', marginBottom: 24 },
   buttonRow: { flexDirection: 'row', gap: 12, marginTop: 16 },
   button: {
-    flex: 1, backgroundColor: colors.accent, padding: 16, borderRadius: 8,
-    alignItems: 'center',
+    flex: 1, backgroundColor: colors.background, padding: 16, borderRadius: 0,
+    alignItems: 'center', borderWidth: 2, borderColor: colors.border,
   },
-  analyzeButton: { backgroundColor: colors.grey700 },
-  buttonText: { color: colors.white, fontSize: 16, fontWeight: '600' },
-  captureCount: { textAlign: 'center', color: colors.textSecondary, marginTop: 12 },
+  analyzeButton: {},
+  buttonText: { ...typography.button, color: colors.text },
+  captureCount: { ...typography.label, textAlign: 'center', color: colors.text, marginTop: 12 },
 });

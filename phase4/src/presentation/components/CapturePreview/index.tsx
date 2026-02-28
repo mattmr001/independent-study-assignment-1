@@ -18,5 +18,5 @@ export function CapturePreview({ imagePath }: Props) {
 }
 
 const styles = StyleSheet.create({
-  image: { width: '100%', height: 300, borderRadius: 8 },
+  image: { width: '100%', height: 300, borderRadius: 0, borderWidth: 2, borderColor: '#000000' },
 });
