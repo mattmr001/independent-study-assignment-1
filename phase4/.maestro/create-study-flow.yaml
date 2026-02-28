@@ -1,0 +1,81 @@
+# ABOUTME: E2E test — BDD Scenarios 1-3: create study, add participant, start session
+# ABOUTME: Validates the full user flow from home screen through session creation
+appId: com.codesign.capture
+---
+- launchApp:
+    clearState: true
+
+# After clearState, dev client launcher appears — tap server to reconnect
+- extendedWaitUntil:
+    visible: "DEVELOPMENT SERVERS"
+    timeout: 10000
+- tapOn: "http://.*:8081"
+
+# Wait for JS bundle to load — the first thing visible will be either
+# the welcome modal ("Continue") or the app itself ("New Study")
+- extendedWaitUntil:
+    visible: "Co-Design Capture"
+    timeout: 30000
+
+# Dismiss dev client welcome modal
+- runFlow:
+    when:
+      visible: "Continue"
+    commands:
+      - tapOn: "Continue"
+
+# Dismiss dev tools panel
+- runFlow:
+    when:
+      visible: "Reload"
+    commands:
+      - swipe:
+          start: "50%, 30%"
+          end: "50%, 90%"
+
+- extendedWaitUntil:
+    visible: "New Study"
+    timeout: 15000
+
+# === BDD Scenario 1: Create a new study ===
+- assertVisible: "Co-Design Capture"
+- assertVisible: "Go Wish Protocol"
+- tapOn: "New Study"
+
+# Should navigate to Study Detail screen (fresh state, so Study 1)
+- extendedWaitUntil:
+    visible: "Study 1"
+    timeout: 5000
+- assertVisible: "Add Participant"
+- assertVisible: "New Session"
+- assertVisible: "No participants yet."
+
+# === BDD Scenario 2: Add a participant ===
+- tapOn: "Add Participant"
+
+# Should see the participant form with coded ID
+- extendedWaitUntil:
+    visible: "P001"
+    timeout: 5000
+- assertVisible: "Age"
+- assertVisible: "Race/Ethnicity"
+
+# Scroll down and save the participant (form allows empty demographics)
+- scrollUntilVisible:
+    element: "Save"
+    direction: DOWN
+- tapOn: "Save"
+
+# Should return to study detail with P001 listed
+- extendedWaitUntil:
+    visible: "P001"
+    timeout: 5000
+- assertVisible: "Study 1"
+
+# === BDD Scenario 3: Start a new session ===
+- tapOn: "New Session"
+
+# Should navigate to capture screen
+- extendedWaitUntil:
+    visible: "Take Photo"
+    timeout: 5000

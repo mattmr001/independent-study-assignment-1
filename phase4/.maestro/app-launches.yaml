@@ -1,0 +1,36 @@
+# ABOUTME: Basic E2E smoke test - verifies app launches and home screen renders
+# ABOUTME: Tests that "Co-Design Capture" title and "New Study" button are visible
+appId: com.codesign.capture
+---
+- launchApp:
+    clearState: true
+
+# After clearState, dev client launcher appears — tap server to reconnect
+- extendedWaitUntil:
+    visible: "DEVELOPMENT SERVERS"
+    timeout: 10000
+- tapOn: "http://.*:8081"
+
+# Wait for JS bundle to load
+- extendedWaitUntil:
+    visible: "Co-Design Capture"
+    timeout: 30000
+
+# Dismiss dev client welcome modal
+- runFlow:
+    when:
+      visible: "Continue"
+    commands:
+      - tapOn: "Continue"
+
+# Dismiss dev tools panel by swiping it down
+- runFlow:
+    when:
+      visible: "Reload"
+    commands:
+      - swipe:
+          start: "50%, 30%"
+          end: "50%, 90%"
+- assertVisible: "Co-Design Capture"
+- assertVisible: "Go Wish Protocol"
+- assertVisible: "New Study"

@@ -1,0 +1,93 @@
+# ABOUTME: E2E test — full mock pipeline: create study, capture, analyze, view results
+# ABOUTME: Validates the complete flow using mock inference service
+appId: com.codesign.capture
+---
+- launchApp:
+    clearState: true
+
+# After clearState, dev client launcher appears — tap server to reconnect
+- extendedWaitUntil:
+    visible: "DEVELOPMENT SERVERS"
+    timeout: 10000
+- tapOn: "http://.*:8081"
+
+# Wait for JS bundle to load
+- extendedWaitUntil:
+    visible: "Co-Design Capture"
+    timeout: 30000
+
+# Dismiss dev client welcome modal
+- runFlow:
+    when:
+      visible: "Continue"
+    commands:
+      - tapOn: "Continue"
+
+# Dismiss dev tools panel
+- runFlow:
+    when:
+      visible: "Reload"
+    commands:
+      - swipe:
+          start: "50%, 30%"
+          end: "50%, 90%"
+
+- extendedWaitUntil:
+    visible: "New Study"
+    timeout: 15000
+
+# Create study
+- tapOn: "New Study"
+- extendedWaitUntil:
+    visible: "Study 1"
+    timeout: 5000
+
+# Add participant
+- tapOn: "Add Participant"
+- extendedWaitUntil:
+    visible: "P001"
+    timeout: 5000
+- scrollUntilVisible:
+    element: "Save"
+    direction: DOWN
+- tapOn: "Save"
+- extendedWaitUntil:
+    visible: "P001"
+    timeout: 5000
+
+# Start session
+- tapOn: "New Session"
+- extendedWaitUntil:
+    visible: "Take Photo"
+    timeout: 5000
+
+# Pick photo from library (dev-only button)
+- tapOn: "Pick Photo"
+
+# iOS photo picker — tap the test Go Wish card image (top-left of grid)
+- extendedWaitUntil:
+    visible: "Photos"
+    timeout: 5000
+- tapOn:
+    point: "17%, 28%"
+- extendedWaitUntil:
+    visible: "1 CAPTURE TAKEN"
+    timeout: 10000
+
+# Navigate to results screen
+- tapOn: "Analyze"
+- extendedWaitUntil:
+    visible: "Results"
+    timeout: 5000
+
+# Tap Analyze on the results screen to trigger mock inference
+- tapOn: "ANALYZE"
+
+# Wait for mock inference to complete (~2.5s mock delay)
+- extendedWaitUntil:
+    visible: "MATCHED CARDS"
+    timeout: 15000
+
+# Verify mock results appear — matched cards from mockService
+- assertVisible: "To be free from pain"
+- assertVisible: "To be at peace with God"
