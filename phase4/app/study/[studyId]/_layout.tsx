@@ -1,8 +1,8 @@
-// ABOUTME: Study layout — wraps study screens
-// ABOUTME: Provides study context via Expo Router Slot
+// ABOUTME: Study layout — Stack navigator for study screens
+// ABOUTME: Enables back navigation between study detail, add participant, and sessions
 
-import { Slot } from 'expo-router';
+import { Stack } from 'expo-router';
 
 export default function StudyLayout() {
-  return <Slot />;
+  return <Stack screenOptions={{ headerShown: false }} />;
 }

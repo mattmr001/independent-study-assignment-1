@@ -2,7 +2,7 @@
 // ABOUTME: Supports text, number, select, and multiselect field types
 
 import { useState } from 'react';
-import { View, Text, TextInput, Pressable, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Pressable, ScrollView, Keyboard, StyleSheet } from 'react-native';
 import { FieldDefinition } from '../../../domain/protocols/types';
 import { colors } from '../../theme/colors';
 
@@ -28,11 +28,12 @@ export function ParticipantForm({ schema, codedId, onSubmit }: Props) {
   };
 
   const handleSubmit = () => {
+    Keyboard.dismiss();
     onSubmit(formData);
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
       <Text style={styles.codedId}>{codedId}</Text>
 
       {schema.map(field => (
