@@ -57,6 +57,12 @@ export default function HomeScreen() {
       <Pressable style={styles.button} onPress={handleNewStudy}>
         <Text style={styles.buttonText}>New Study</Text>
       </Pressable>
+
+      {__DEV__ && (
+        <Pressable style={styles.storybookLink} onPress={() => router.push('/storybook')}>
+          <Text style={styles.storybookText}>Open Storybook</Text>
+        </Pressable>
+      )}
     </View>
   );
 }
@@ -77,4 +83,6 @@ const styles = StyleSheet.create({
     alignItems: 'center', marginTop: 16,
   },
   buttonText: { color: colors.white, fontSize: 18, fontWeight: '600' },
+  storybookLink: { alignItems: 'center', marginTop: 12, padding: 8 },
+  storybookText: { color: colors.textSecondary, fontSize: 14 },
 });
