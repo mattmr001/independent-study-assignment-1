@@ -8,7 +8,8 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "storybook-generate": "sb-rn-get-stories",
-    "storybook": "EXPO_PUBLIC_STORYBOOK_ENABLED=true expo start"
+    "storybook": "EXPO_PUBLIC_STORYBOOK_ENABLED=true expo start",
+    "start:mock": "EXPO_PUBLIC_MOCK_INFERENCE=true expo start"
   },
   "dependencies": {
     "@babel/core": "^7.29.0",

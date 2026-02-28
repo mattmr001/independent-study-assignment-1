@@ -10,8 +10,10 @@ import { useFonts } from 'expo-font';
 import { persistedReducer, persistStore } from '../src/data/persistence';
 import { ThunkExtra } from '../src/data/store';
 import * as inferenceService from '../src/data/inference/service';
+import * as mockInferenceService from '../src/data/inference/mockService';
 
-const extra: ThunkExtra = { inferenceService };
+const useMock = process.env.EXPO_PUBLIC_MOCK_INFERENCE === 'true';
+const extra: ThunkExtra = { inferenceService: useMock ? mockInferenceService : inferenceService };
 
 const store = configureStore({
   reducer: persistedReducer,
