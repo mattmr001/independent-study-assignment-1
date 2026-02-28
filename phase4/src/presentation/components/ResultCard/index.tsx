@@ -3,6 +3,7 @@
 
 import { View, Text, StyleSheet } from 'react-native';
 import { colors } from '../../theme/colors';
+import { typography, fonts } from '../../theme/typography';
 
 interface MatchedCard {
   referenceText: string;
@@ -26,7 +27,7 @@ export function ResultCard({ matched, unmatched }: Props) {
           <Text style={styles.sectionHeader}>Matched Cards</Text>
           {matched.map((card, i) => (
             <View key={i} style={styles.matchedItem}>
-              <Text style={styles.checkmark}>✓</Text>
+              <Text style={styles.checkmark}>[✓]</Text>
               <Text style={styles.cardText}>{card.referenceText}</Text>
             </View>
           ))}
@@ -38,7 +39,7 @@ export function ResultCard({ matched, unmatched }: Props) {
           <Text style={styles.sectionHeaderWarning}>Needs Review</Text>
           {unmatched.map((text, i) => (
             <View key={i} style={styles.unmatchedItem}>
-              <Text style={styles.unmatchedText}>{text}</Text>
+              <Text style={styles.unmatchedText}>[!] {text}</Text>
             </View>
           ))}
         </View>
@@ -49,20 +50,20 @@ export function ResultCard({ matched, unmatched }: Props) {
 
 const styles = StyleSheet.create({
   container: { padding: 16 },
-  summary: { fontSize: 14, color: colors.textSecondary, textAlign: 'center', marginBottom: 16 },
+  summary: { ...typography.label, color: colors.text, textAlign: 'center', marginBottom: 16 },
   section: { marginBottom: 16 },
-  sectionHeader: { fontSize: 16, fontWeight: '600', color: colors.textPrimary, marginBottom: 8 },
-  sectionHeaderWarning: { fontSize: 16, fontWeight: '600', color: colors.error, marginBottom: 8 },
+  sectionHeader: { ...typography.sectionHeader, color: colors.text, marginBottom: 8 },
+  sectionHeaderWarning: { ...typography.sectionHeader, color: colors.error, marginBottom: 8 },
   matchedItem: {
     flexDirection: 'row', alignItems: 'center', padding: 10,
-    backgroundColor: colors.surface, borderRadius: 6, marginBottom: 6,
+    backgroundColor: colors.surface, borderRadius: 0, marginBottom: 6,
     borderWidth: 1, borderColor: colors.border,
   },
-  checkmark: { fontSize: 16, color: colors.accent, marginRight: 8, fontWeight: 'bold' },
-  cardText: { fontSize: 14, color: colors.textPrimary, flex: 1 },
+  checkmark: { ...typography.body, fontFamily: fonts.bold, color: colors.text, marginRight: 8 },
+  cardText: { ...typography.body, color: colors.text, flex: 1 },
   unmatchedItem: {
-    padding: 10, backgroundColor: '#fff5f5', borderRadius: 6, marginBottom: 6,
-    borderWidth: 1, borderColor: colors.error,
+    padding: 10, backgroundColor: colors.surface, borderRadius: 0, marginBottom: 6,
+    borderWidth: 2, borderColor: colors.error,
   },
-  unmatchedText: { fontSize: 14, color: colors.error },
+  unmatchedText: { ...typography.body, color: colors.error },
 });

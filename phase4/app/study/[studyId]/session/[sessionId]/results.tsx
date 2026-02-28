@@ -13,6 +13,7 @@ import { selectResultByAnalysisId } from '../../../../../src/domain/results/slic
 import { runAnalysis } from '../../../../../src/domain/analyses/thunks';
 import { ResultCard } from '../../../../../src/presentation/components/ResultCard';
 import { colors } from '../../../../../src/presentation/theme/colors';
+import { typography } from '../../../../../src/presentation/theme/typography';
 
 export default function ResultsScreen() {
   const { studyId, sessionId } = useLocalSearchParams<{ studyId: string; sessionId: string }>();
@@ -69,7 +70,7 @@ export default function ResultsScreen() {
 
       {latestAnalysis?.status === 'running' && (
         <View style={styles.centered}>
-          <ActivityIndicator size="large" color={colors.accent} />
+          <ActivityIndicator size="large" color={colors.text} />
           <Text style={styles.info}>Analyzing...</Text>
         </View>
       )}
@@ -92,12 +93,13 @@ export default function ResultsScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 24, paddingTop: 60, backgroundColor: colors.background },
-  title: { fontSize: 24, fontWeight: 'bold', color: colors.textPrimary, textAlign: 'center', marginBottom: 24 },
+  title: { ...typography.title, color: colors.text, textAlign: 'center', marginBottom: 24 },
   centered: { alignItems: 'center', marginTop: 48 },
-  info: { fontSize: 16, color: colors.textSecondary, marginTop: 16, marginBottom: 16 },
+  info: { ...typography.body, color: colors.text, marginTop: 16, marginBottom: 16 },
   button: {
-    backgroundColor: colors.accent, paddingHorizontal: 32, paddingVertical: 14, borderRadius: 8,
+    backgroundColor: colors.background, paddingHorizontal: 32, paddingVertical: 14,
+    borderRadius: 0, borderWidth: 2, borderColor: colors.border,
   },
-  buttonText: { color: colors.white, fontSize: 16, fontWeight: '600' },
-  errorText: { fontSize: 16, color: colors.error, textAlign: 'center', marginBottom: 16 },
+  buttonText: { ...typography.button, color: colors.text },
+  errorText: { ...typography.body, color: colors.error, textAlign: 'center', marginBottom: 16 },
 });

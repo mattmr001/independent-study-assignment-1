@@ -75,6 +75,6 @@ describe('ResultsScreen', () => {
     };
     const { getByText } = renderWithStore(<ResultsScreen />, { preloadedState });
     expect(getByText('To be free from pain')).toBeTruthy();
-    expect(getByText('garbled text')).toBeTruthy();
+    expect(getByText('[!] garbled text')).toBeTruthy();
   });
 });

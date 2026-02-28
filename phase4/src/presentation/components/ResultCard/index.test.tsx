@@ -20,7 +20,7 @@ describe('ResultCard', () => {
     const { getByText } = render(
       <ResultCard matched={[]} unmatched={['garbled text from OCR']} />,
     );
-    expect(getByText('garbled text from OCR')).toBeTruthy();
+    expect(getByText('[!] garbled text from OCR')).toBeTruthy();
     expect(getByText(/Needs Review/i)).toBeTruthy();
   });
 
