@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { View, Text, TextInput, Pressable, ScrollView, Keyboard, StyleSheet } from 'react-native';
 import { FieldDefinition } from '../../../domain/protocols/types';
 import { colors } from '../../theme/colors';
+import { typography, fonts } from '../../theme/typography';
 
 interface Props {
   schema: FieldDefinition[];
@@ -101,24 +102,24 @@ export function ParticipantForm({ schema, codedId, onSubmit }: Props) {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 24, backgroundColor: colors.background },
-  codedId: { fontSize: 20, fontWeight: 'bold', color: colors.textPrimary, textAlign: 'center', marginBottom: 24 },
+  codedId: { ...typography.title, color: colors.text, textAlign: 'center', marginBottom: 24 },
   fieldContainer: { marginBottom: 16 },
-  label: { fontSize: 16, fontWeight: '600', color: colors.textPrimary, marginBottom: 8 },
+  label: { ...typography.sectionHeader, color: colors.text, marginBottom: 8 },
   input: {
-    backgroundColor: colors.surface, padding: 12, borderRadius: 6,
-    borderWidth: 1, borderColor: colors.border, fontSize: 16, color: colors.textPrimary,
+    backgroundColor: colors.surface, padding: 12, borderRadius: 0,
+    borderWidth: 2, borderColor: colors.border, ...typography.body, color: colors.text,
   },
   optionsContainer: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   option: {
-    paddingHorizontal: 12, paddingVertical: 8, borderRadius: 6,
-    borderWidth: 1, borderColor: colors.border, backgroundColor: colors.surface,
+    paddingHorizontal: 12, paddingVertical: 8, borderRadius: 0,
+    borderWidth: 2, borderColor: colors.border, backgroundColor: colors.surface,
   },
-  optionSelected: { backgroundColor: colors.accent, borderColor: colors.accent },
-  optionText: { fontSize: 14, color: colors.textPrimary },
-  optionTextSelected: { color: colors.white },
+  optionSelected: { backgroundColor: colors.text, borderColor: colors.text },
+  optionText: { ...typography.body, color: colors.text },
+  optionTextSelected: { color: colors.background },
   saveButton: {
-    backgroundColor: colors.accent, padding: 16, borderRadius: 8,
-    alignItems: 'center', marginTop: 24, marginBottom: 48,
+    backgroundColor: colors.background, padding: 16, borderRadius: 0,
+    alignItems: 'center', marginTop: 24, marginBottom: 48, borderWidth: 2, borderColor: colors.border,
   },
-  saveButtonText: { color: colors.white, fontSize: 18, fontWeight: '600' },
+  saveButtonText: { ...typography.button, color: colors.text },
 });
